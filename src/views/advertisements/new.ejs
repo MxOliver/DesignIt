@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <% include ../static/partials/head.ejs %>
+    </head>
+    <body>
+        <!--navigation-->
+        <% include ../static/partials/navbar.ejs %>
+
+        <main class="container">
+            
+            <h1>New Advertisement</h1>
+
+            <form action="/advertisements/create" method="post">
+                <div class="form-group">
+                    <label for="title">Advertisement title</label>
+                    <input type="text" class="form-control" name="title" aria-describedby="titleHelp" placeholder="Enter Title">
+                </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea rows="4" class="form-control" name="description" placeholder="Enter Description"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+
+        </main>
+        <% include ../static/partials/baseScripts.ejs %>
+    </body>
+</html>
