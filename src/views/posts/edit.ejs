@@ -9,9 +9,10 @@
     <% include ../static/partials/navbar.ejs %>
 
     <main class="container">
-
+            <% include ../static/partials/messages.ejs %>
+            
         <h1>Edit Post</h1>
-        <% include ../static/partials/messages.ejs %>
+        
 
         <form action="/topics/<%= post.topicId %>/posts/<%= post.id %>/update" method="post">
             <div class="form-group">
