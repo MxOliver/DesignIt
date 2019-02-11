@@ -23,7 +23,7 @@ describe("routes : posts", () => {
 
                 Post.create({
                     title: "Snowball Fighting",
-                    body: "So much snow!",
+                    body: "So much snow! I wish it would snow every day.",
                     topicId: this.topic.id 
                 })
                 .then((post) => {
@@ -147,7 +147,7 @@ describe("routes : posts", () => {
                 url: `${base}/${this.topic.id}/posts/${this.post.id}/update`,
                 form: {
                     title: "Snowman Building Competition",
-                    body: "I love watching them melt slowly."
+                    body: "I love watching them melt slowly. It's the best."
                 }
             }, (err, res, body) => {
                 expect(res.statusCode).toBe(302);

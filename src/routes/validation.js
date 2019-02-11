@@ -12,7 +12,7 @@ module.exports = {
 
         if(errors) {
             req.flash("error", errors);
-            return res.redirect(303, req.headers.referr)
+            return res.redirect(303, req.headers.referer)
         } else {
             return next();
         }
