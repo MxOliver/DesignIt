@@ -14,7 +14,7 @@
         <h1>Edit Post</h1>
         
 
-        <form action="/topics/<%= post.topicId %>/posts/<%= post.id %>/update" method="post">
+        <form action="/topics/<%= post.topicId %>/posts/<%= post.id %>/update" method="POST">
             <div class="form-group">
                 <label for="title">Post title</label>
                 <input value="<%= post.title %>" type="text" class="form-control" name="title" aria-describedby="titleHelp"

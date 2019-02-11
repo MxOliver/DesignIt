@@ -147,7 +147,7 @@ describe("routes : posts", () => {
                 url: `${base}/${this.topic.id}/posts/${this.post.id}/update`,
                 form: {
                     title: "Snowman Building Competition",
-                    body: "I love watching them melt slowly. It's the best."
+                    body: "I love watching them melt slowly."
                 }
             }, (err, res, body) => {
                 expect(res.statusCode).toBe(302);
@@ -159,7 +159,8 @@ describe("routes : posts", () => {
             const options = {
                 url: `${base}/${this.topic.id}/posts/${this.post.id}/update`,
                 form: {
-                    title: "Snowman Building Competition"
+                    title: "Snowman Building Competition",
+                    body: "I love watching them melt slowly."
                 }
             };
             request.post(options, 
@@ -167,11 +168,10 @@ describe("routes : posts", () => {
 
                     expect(err).toBeNull();
 
-                    Post.findOne({
-                        where: {id: this.post.id}
-                    })
+                    Post.findOne({where: {id: this.post.id}})
                     .then((post) => {
                         expect(post.title).toBe("Snowman Building Competition");
+                        expect(post.body).toBe("I love watching them melt slowly.")
                         done();
                     });
                 });

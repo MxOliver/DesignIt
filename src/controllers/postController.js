@@ -48,6 +48,8 @@ module.exports = {
     update(req, res, next){
         postQueries.updatePost(req.params.id, req.body, (err, post) => {
             if(err || post == null){
+                console.log("Error editing post:");
+                console.log(err);
                 res.redirect(404, `/topics/${req.params.topicId}/posts/${req.params.id}/edit`);
             } else {
                 res.redirect(`/topics/${req.params.topicId}/posts/${req.params.id}`);
