@@ -146,6 +146,7 @@ describe("routes : topics", () => {
                     })
                     .then((topic) => {
                         expect(topic.title).toBe("JavaScript Frameworks");
+                        expect(topic.description).toBe("There are a lot of them");
                         done();
                     });
                 });
