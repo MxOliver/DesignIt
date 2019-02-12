@@ -23,7 +23,7 @@ module.exports = {
 
             req.checkBody("email", "must be valid").isEmail();
             req.checkBody("password", "must be at ;east 6 characters in length").isLength({min:6})
-            ///req.checkBody("passwordConfirmation", "must match password provided").optional().matched(req.body.password);
+            req.checkBody("passwordConfirmation", "must match password provided").optional().matches(req.body.password);
         }
 
         const errors = req.validationErrors();
