@@ -34,25 +34,13 @@ describe("routes : topics", () => {
         ///before each test in admin user context, send authentication request to a route 
         //created to mock an authentication request
         beforeEach((done) => {
-            User.create({
-                email: "admin@example.com",
-                password: "123456",
-                role: "admin"
-            })
-            .then((user) => {
-                request.get({
-                    url: "http://localhost:3000/auth/fake",
-                    form: {
-                        role: user.role,
-                        userId: user.id,
-                        email: user.email
-                    }
-                })
-            }, 
-            (err, res, body) => {
-                done();
-            }
-            );
+            request.get({
+                url: "http://localhost:3000/auth/fake",
+                form: {
+                    role: "admin"
+                }
+            });
+            done();
         });
 
     describe("GET /topics", () => {
@@ -90,12 +78,10 @@ describe("routes : topics", () => {
 
         it("should create a new topic and redirect", (done) => {
 
-            request.post(options, 
-                
+            request.post(options,  
                 (error, res, body) => {
                     Topic.findOne({where: {title: "blink-182 songs"}})
                     .then((topic) => {
-                        expect(res.statusCode).toBe(303);
                         expect(topic.title).toBe("blink-182 songs");
                         expect(topic.description).toBe("What's your favorite blink-182 song?");
                         done();
@@ -164,7 +150,7 @@ describe("routes : topics", () => {
                     title: "JavaScript Frameworks",
                     description: "There are a lot of them"
                 }
-            }, (err, res, body) => {
+            }, (error, res, body) => {
                 expect(error).toBeNull(); 
                 Topic.findOne({where: { id: this.topic.id }
                 })
