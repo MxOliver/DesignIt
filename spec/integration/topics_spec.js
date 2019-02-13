@@ -5,26 +5,46 @@ const base = "http://localhost:3000/topics/";
 const sequelize = require("../../src/db/models/index").sequelize;
 const Topic = require("../../src/db/models").Topic;
 const User = require("../../src/db/models").User;
+const Post = require("../../src/db/models").Post;
 
 describe("routes : topics", () => {
 
     beforeEach((done) => {
         this.topic;
+        this.post;
+        this.user;
         sequelize.sync({force: true}).then((res) => {
 
-            Topic.create({
-                title: "JS Frameworks",
-                description: "There is a lot of them"
+            User.create({
+                email: "starman@tesla.com",
+                password: "Trekkie4lyfe"
             })
-            .then((res) => {
-                this.topic = res;
+            .then((user) => {
+                this.user = user;
+
+                Topic.create({
+                    title: "JS Frameworks",
+                    description: "There is a lot of them",
+
+                    posts: [{
+                        title: "My first visit to Proxima Centauri b",
+                        body: "I saw some rocks.",
+                        userId: this.user.id
+                    }]
+            }, {
+
+                include: {
+                    model: Post,
+                    as: "posts"
+                }
+            })
+            .then((topic) => {
+                this.topic = topic;
+                this.post = topic.posts[0];
                 done();
             })
-            .catch((error) => {
-                console.log(error);
-                done();
-            })
-        })
+         })
+        });
     });
 
     //ADMIN USER CONTEXT 
@@ -34,13 +54,23 @@ describe("routes : topics", () => {
         ///before each test in admin user context, send authentication request to a route 
         //created to mock an authentication request
         beforeEach((done) => {
-            request.get({
-                url: "http://localhost:3000/auth/fake",
-                form: {
-                    role: "admin"
-                }
+            User.create({
+                email: "admin@example.com",
+                password: "123456",
+                role: "admin"
+            })
+            .then((user) => {
+                request.get({
+                    url: "http://localhost:3000/auth/fake",
+                    form: {
+                        role: user.role,
+                        userId: user.id,
+                        email: user.email
+                    }
+                }, (err, res, body) => {
+                    done();
+                });
             });
-            done();
         });
 
     describe("GET /topics", () => {
