@@ -38,7 +38,7 @@ module.exports = {
             };
             topicQueries.addTopic(newTopic, (error, topic) => {
                 if(error){
-                    res.redirect(500, "/topics/new");
+                    res.redirect(500, "topics/new");
                 } else {
                     res.redirect(303, `/topics/${topic.id}`);
                 };

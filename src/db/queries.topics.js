@@ -70,6 +70,7 @@ module.exports = {
             if(!topic){
                 return callback("Topic not found");
             }
+            
             const authorized = new Authorizer(req.user, topic).update();
             
             if(authorized){
