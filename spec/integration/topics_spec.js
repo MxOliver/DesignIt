@@ -53,6 +53,7 @@ describe("routes : topics", () => {
             });
         });
 
+
     describe("GET /topics", () => {
 
         it("should respond with all topics", (done) => {
@@ -92,6 +93,7 @@ describe("routes : topics", () => {
                 (error, res, body) => {
                     Topic.findOne({where: {title: "blink-182 songs"}})
                     .then((topic) => {
+                        expect(topic).toBeDefined();
                         expect(topic.title).toBe("blink-182 songs");
                         expect(topic.description).toBe("What's your favorite blink-182 song?");
                         done();
