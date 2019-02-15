@@ -42,6 +42,7 @@ module.exports = {
             if(!post){
                 return callback("post not found");
             }
+
            
         const authorized = new Authorizer(req.user, post).update();
 

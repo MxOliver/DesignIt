@@ -60,6 +60,7 @@ module.exports = {
             if(error || post === null){
                res.redirect(404, "/posts");
             } else {
+
                 const authorized = new Authorizer(req.user).edit();
 
                 if(authorized){
