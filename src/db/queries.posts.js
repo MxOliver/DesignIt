@@ -29,11 +29,10 @@ module.exports = {
             .then((res) => {
                 callback(null, post);
             });
-        } else {
-            req.flash("notice", "You are not authorized to do that");
-            callback("Forbidden");
-        }
-        
+         } else {
+             req.flash("notice", "You are not authorized to do that");
+             callback("Forbidden");
+         }
     },
     updatePost(id, updatedPost, callback){
 
