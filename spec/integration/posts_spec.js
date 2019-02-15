@@ -106,8 +106,7 @@ describe("routes : posts", () => {
             it("should NOT render a view with an edit post form", (done) => {
                 request.get(`${base}/${this.topic.id}/posts/${this.post.id}/edit`, (err, res, body) => {
                     expect(err).toBeNull();
-                    expect(body).not.toContain("New Post");
-                    expect(body).toContain("Snowball Fighting");
+                    expect(body).toContain("Error");
                     done();
                 });
             });
@@ -228,7 +227,7 @@ describe("routes : posts", () => {
             request.get(`${base}/${this.topic.id}/posts/${this.post.id}/edit`, (err, res, body) => {
                 expect(err).toBeNull();
                 expect(body).not.toContain("New Post");
-                expect(body).toContain("Snowball Fighting");
+                expect(body).toContain("Error");
                 done();
             });
         });

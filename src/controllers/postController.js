@@ -1,5 +1,5 @@
 const postQueries = require("../db/queries.posts.js");
-const Authorizer = require("../policies/post");
+const Authorizer = require("../policies/application");
 
 module.exports = {
     new(req, res, next){
@@ -56,20 +56,26 @@ module.exports = {
         });
     },
     edit(req, res, next){
-        const authorized = new Authorizer(req.user).edit();
+        postQueries.getPost(req.params.id, (error, post) => {
+            if(error || post === null){
+               res.redirect(404, "/posts");
+            } else {
+                const authorized = new Authorizer(req.user).edit();
 
-        if(authorized){
-            postQueries.getPost(req, (err, post) => {
-                if(err || post == null){
-                    res.redirect(404, "/");
+                if(authorized){
+                    postQueries.getPost(req, (err, post) => {
+                        if(err || post == null){
+                            res.redirect(404, "/");
+                        } else {
+                            res.render("posts/edit", {post});
+                        }
+                    });
                 } else {
-                    res.render("posts/edit", {post});
+                    req.flash("notice", "You are not authorized to do that.");
+                    res.redirect(`/posts/${req.params.id}`);
                 }
-            });
-        } else {
-            req.flash("notice", "You are not authorized to do that.");
-            res.redirect(`/posts/${req.params.id}`);
-        }
+            }
+        });
     },
     update(req, res, next){
         postQueries.updatePost(req, req.body, (err, post) => {
