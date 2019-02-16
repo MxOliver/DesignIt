@@ -58,7 +58,7 @@ module.exports = {
     edit(req, res, next){
         postQueries.getPost(req.params.id, (error, post) => {
             if(error || post === null){
-               res.redirect(404, "/posts");
+               res.redirect(404, `/topics/${req.params.topicId}`);
             } else {
 
                 const authorized = new Authorizer(req.user).edit();
