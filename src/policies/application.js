@@ -30,8 +30,7 @@ module.exports = class ApplicationPolicy {
     }
 
     edit() {
-        return this.new() && 
-            this.record && (this._isOwner() || this._isAdmin());
+        return this.new() && (this._isOwner() || this._isAdmin());
     }
 
     update() {

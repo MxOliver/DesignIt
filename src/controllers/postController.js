@@ -64,8 +64,6 @@ module.exports = {
                 const authorized = new Authorizer(req.user).edit();
 
                 if(authorized){
-                    console.log("AUTHORIZED");
-                    console.log(req.user);
                     postQueries.getPost(req, (err, post) => {
                         if(err || post == null){
                             res.redirect(404, "/");
@@ -74,8 +72,6 @@ module.exports = {
                         }
                     });
                 } else {
-                    console.log("NOT AUTHORIZED");
-                    console.log(req.user);
                     req.flash("notice", "You are not authorized to do that.");
                     res.redirect(`/posts/${req.params.id}`);
                 }
