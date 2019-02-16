@@ -64,7 +64,7 @@ module.exports = {
                 const authorized = new Authorizer(req.user).edit();
 
                 if(authorized){
-                    postQueries.getPost(req, (err, post) => {
+                    postQueries.getPost(req.params.id, (err, post) => {
                         if(err || post == null){
                             res.redirect(404, "/");
                         } else {
