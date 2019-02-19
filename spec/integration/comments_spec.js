@@ -137,15 +137,27 @@ describe("routes : comments", () => {
     describe("signed in user performing CRUD actions for Comment", () => {
 
         beforeEach((done) => {
-            request.get({
-                url: "http://localhost:3000/auth/fake",
-                form: {
-                    role: "member",
-                    userId: this.user.id
-                }
-            }, (err, res, body) => {
-                done();
+            this.comment;
+
+            Comment.create({
+                body: "Wow Really?!",
+                userId: this.user.id,
+                postId: this.post.id
+            })
+            .then((comment) => {
+                this.comment = comment;
+
+                request.get({
+                    url: "http://localhost:3000/auth/fake",
+                    form: {
+                        role: "member",
+                        userId: this.user.id
+                    }
+                }, (err, res, body) => {
+                    done();
+                });
             });
+            
         });
 
         describe("POST /topics/:topicId/posts/:postId/comments/create", () => {
@@ -176,17 +188,80 @@ describe("routes : comments", () => {
 
         describe("POST /topics/:topicId/posts/:postId/comments/:id/destroy", () => {
 
-            it("should delete the comment withh the associated ID", (done) => {
+            it("should delete the comment withh the associated ID if it belongs to the user", (done) => {
+    
+                    request.get("http://localhost:3000/auth/fake", (err, req, body) => {
+                        Comment.findOne({where: {userId: req.body.id}})
+                        .then((comment) => {
+                            request.post(
+                                `${base}${this.topic.idd}/posts/${this.post.id}/comments/${this.comment.id}/destroy`,
+                                (err, res, body) => {
+                                    expect(err).toBeNull();
+                                    expect(comment).toBeNull();
+                                    done();
+                                }
+                            );
+                        });  
+                    });
+            });
+
+            it("should not delete comments that belong to another user", (done) => {
+                User.create({
+                    email: "beekeeper@example.com",
+                    password: "123456789",
+                    role: "member",
+                    userId: 5
+                })
+                .then(() => {
+                    Comment.findOne({where: {userId: this.user.id}})
+                    .then((comment) => {
+                        expect(comment.userId).toBe(this.user.id);
+                        expect(comment.userId).not.toBe(5);
+
+                        request.post(
+                            `${base}${this.topic.idd}/posts/${this.post.id}/comments/${this.comment.id}/destroy`,
+                            (err, res, body) => {
+                                expect(err).toBeNull();
+                                expect(comment).not.toBeNull();
+                                done();
+                            }
+                        );
+                    });
+                });
+            });
+        });
+
+    });
+    ///END CONTEXT FOR SIGNED IN USER
+
+    ///ADMIN USER CONTEXT
+    describe("Admin user performing CRUD actions for Comment", () => {
+
+        beforeEach((done) => {
+            request.get({
+                url: "http://localhost:3000/auth/fake",
+                form: {
+                    role: "Admin",
+                    userId: this.user.id
+                }
+            }, (err, res, body) => {
+                done();
+            });
+        });
+
+        describe("POST /topics/:topicId/posts/:postId/comments/destroy", () => {
+
+            it("should delete the member user's comment with the associated ID", (done) => {
                 Comment.all()
                 .then((comments) => {
                     const commentCountBeforeDelete = comments.length;
 
                     expect(commentCountBeforeDelete).toBe(1);
 
+
                     request.post(
                         `${base}${this.topic.id}/posts/${this.post.id}/comments/${this.comment.id}/destroy`,
                         (err, res, body) => {
-                            expect(res.statusCode).toBe(302);
                             Comment.all()
                             .then((comments) => {
                                 expect(err).toBeNull();
@@ -199,6 +274,4 @@ describe("routes : comments", () => {
             });
         });
     });
-    ///END CONTEXT FOR SIGNED IN USER
-
 });

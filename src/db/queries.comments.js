@@ -25,7 +25,7 @@ module.exports = {
                 comment.destroy();
                 callback(null, comment)
             } else {
-                console.log("NOT AUTHORIZED TO DELETE");
+                console.log("YOU ARE NOT AUTHORIZED");
                 req.flash("notice", "You are not authorized to do that.");
                 callback(401);
             }
