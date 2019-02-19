@@ -40,7 +40,7 @@ module.exports = {
     edit(req, res, next){
         postQueries.getPost(req.params.id, (err, post) => {
             if(err || post == null){
-                res.redirect(404, "/");
+                res.redirect(404, `/topics/${req.params.topicId}`);
             } else {
                 res.render("posts/edit", {post});
             }
