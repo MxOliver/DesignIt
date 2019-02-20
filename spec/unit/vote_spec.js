@@ -168,7 +168,7 @@ describe("Vote", () => {
                 .then((user) => {
 
                     console.log("USER IS");
-                    console.log(this.user.id);
+                    console.log(user);
 
                     expect(user.id).toBe(this.user.id);
                     done();
