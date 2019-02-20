@@ -6,6 +6,7 @@ const sequelize = require("../../src/db/models/index").sequelize;
 const Topic = require("../../src/db/models").Topic;
 const Post = require("../../src/db/models").Post;
 const User = require("../../src/db/models").User;
+const Vote = require("../../src/db/models").Vote;
 
 describe("routes : posts", () => {
 
@@ -183,6 +184,134 @@ describe("routes : posts", () => {
                         done();
                     });
                 });
+        });
+    });
+
+    describe("#hasUpvoteFor()", () => {
+
+        it("should return true if the matching user has an upvote for the post", (done) => {
+            Post.findOne({where: {id: this.post.id}})
+            .then((post) => {
+                this.post = post;
+
+                Vote.create({
+                    value: 1,
+                    postId: this.post.id,
+                    userId: this.user.id             
+                })
+                .then((vote) => {
+                    this.vote = vote;
+
+                    this.post.hasUpvoteFor(this.user.id)
+                    .then((res) => {
+                        expect(this.user.id).toBe(this.vote.userId);
+                        expect(res).toBeTruthy();
+                        done();
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        done();
+                    });
+                });
+            })
+        });
+
+        it("should return false if the matching user does not have an upvote for the post", (done) => {
+            Post.create({
+                title: "Apples or Oranges?",
+                body: "How about both!!",
+                topicId: this.topic.id,
+                userId: this.user.id
+            })
+            .then((post) => {
+                this.post = post;
+
+                Vote.findAll({
+                    where: {
+                        userId: this.user.id,
+                        postId: this.post.id,
+                        value: 1
+                    }
+                })
+                .then((vote) => {
+
+                    this.vote = vote;
+                    
+                    this.post.hasUpvoteFor(this.user.id)
+                    .then((res) => {
+                        expect(res).toBeFalsy();
+                        done();
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        done();
+                    });
+                })
+            });
+        });
+    });
+
+    describe("#hasDownvoteFor()", () => {
+
+        it("should return true if the matching user has a downvote for the post", (done) => {
+            Post.findOne({where: {id: this.post.id}})
+            .then((post) => {
+                this.post = post;
+
+                Vote.create({
+                    value: -1,
+                    postId: this.post.id,
+                    userId: this.user.id
+                })
+                .then((vote) => {
+                    this.vote = vote;
+
+                    this.post.hasDownvoteFor(this.user.id)
+                    .then((res) => {
+                        expect(this.user.id).toBe(this.vote.userId);
+                        expect(res).toBeTruthy();
+                        done();
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        done();
+                    });
+                });
+            });
+        });
+
+        it("should return false if the matching user does not have a downvote for the post", (done) => {
+            Post.create({
+                title: "Plums or Pears?",
+                body: "How about both!!",
+                topicId: this.topic.id,
+                userId: this.user.id
+            })
+            .then((post) => {
+                this.post = post;
+
+                Vote.findAll({
+                    where: {
+                        userId: this.user.id,
+                        postId: this.post.id,
+                        value: -1
+                    }
+                })
+                .then((vote) => {
+
+                    this.vote = vote;
+
+                    this.post.hasDownvoteFor(this.user.id)
+                    .then((res) => {
+                        expect(res).toBeFalsy();
+                        done();
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        done();
+                    });
+                })
+            });
         });
     });
 });

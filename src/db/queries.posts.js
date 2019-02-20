@@ -58,4 +58,20 @@ module.exports = {
             });
         });
     }
+    // getVotes(id, callback){
+    //     return Vote.findAll({
+    //         where: {
+    //             userId: id
+    //         }})
+    //         .then((vote) => {
+    //             if(vote){
+    //                 callback(null, vote);
+    //             } else {
+    //                 callback("This user has no votes");
+    //             }
+    //         })
+    //         .catch((err) => {
+    //             callback(err);
+    //         });
+    // }
 }

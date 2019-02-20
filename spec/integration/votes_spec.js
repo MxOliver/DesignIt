@@ -136,6 +136,47 @@ describe("routes : votes", () => {
                         });
                     });
             });
+
+            it("should not create an upvote with a value other than 1", (done) => {
+                Vote.create({
+                    value: 2,
+                    postId: this.post.id,
+                    userId: this.user.id
+                })
+                .then((vote) => {
+                    
+                    done();
+                })
+                .catch((err) => {
+                    expect(err.message).toContain("Validation error: Validation isIn on value failed");
+                    done();
+                });
+            });
+
+            it("should not create more than one vote per user on the same post", (done) => {
+                Vote.create({
+                    value: 1,
+                    postId: this.post.id,
+                    userId: this.user.id
+                })
+                .then((vote) => {
+                    this.vote = vote;
+
+                    Vote.create({
+                        value: 1,
+                        postId: this.post.id,
+                        userId: this.user.id
+                    })
+                    .then((newVote) => {
+
+                        done();
+                    })
+                    .catch((err) => {
+                        expect(err.message).toContain("A user can not vote more than once on the same post");
+                        done();
+                    })
+                })
+            });
         });
 
         describe("GET /topics/:topicId/posts/:postId/votes/downvote", () => {
@@ -165,6 +206,59 @@ describe("routes : votes", () => {
                         });
                     });
             });
+
+            it("should not create an downvote with a value other than -1", (done) => {
+                Vote.create({
+                    value: -2,
+                    postId: this.post.id,
+                    userId: this.user.id
+                })
+                .then((vote) => {
+                    
+                    done();
+                })
+                .catch((err) => {
+                    expect(err.message).toContain("Validation error: Validation isIn on value failed");
+                    done();
+                });
+            });
+
+            it("should not create more than one vote per user on the same post", (done) => {
+                Vote.create({
+                    value: -1,
+                    postId: this.post.id,
+                    userId: this.user.id
+                })
+                .then((vote) => {
+                    this.vote = vote;
+
+                    Vote.create({
+                        value: -1,
+                        postId: this.post.id,
+                        userId: this.user.id
+                    })
+                    .then(() => {
+
+                        done();
+                    })
+                    .catch((err) => {
+                        expect(err.message).toContain("A user can not vote more than once on the same post");
+                        done();
+                    })
+                })
+            });
         });
+
+    describe("#getPoints()", () => {
+
+        it("should return the sum of all the votes for the given post", (done) => {
+
+            done();
+           
+        });      
+
     });
+
+  });
+
 });

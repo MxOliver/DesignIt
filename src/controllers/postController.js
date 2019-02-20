@@ -57,4 +57,32 @@ module.exports = {
             }
         });
     }
+    // hasUpvoteFor(req, res, next){
+    //     postQueries.getVotes(req.params.id, (err, vote) => {
+    //         if(err || vote == null){
+    //             console.log("No votes found");
+    //             console.log(err);
+    //         } else {
+    //             if(vote.value == 1){
+    //                 res.send("True");
+    //             } else {
+    //                 res.send("False");
+    //             };
+    //         };
+    //     });
+    // },
+    // hasDownvoteFor(req, res, next){
+    //     postQueries.getVotes(req.params.id, (err, post) => {
+    //         if(err || vote == null){
+    //             console.log("No votes found");
+    //             console.log(err);
+    //         } else {
+    //             if(vote.value == -1){
+    //                 res.send("True");
+    //             } else {
+    //                 res.send("False");
+    //             }
+    //         };
+    //     });
+    // }
 }
