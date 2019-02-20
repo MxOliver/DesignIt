@@ -19,8 +19,8 @@ describe("Vote", () => {
                 email: "beekeeper@hive.com",
                 password: "bees4lyfe"
             })
-            .then((user) => {
-                this.user = user;
+            .then((res) => {
+                this.user = res;
 
                 Topic.create({
                     title: "The Tradition of Beekeeping",
@@ -36,8 +36,8 @@ describe("Vote", () => {
                         as: "posts"
                     }
                 })
-                .then((topic) => {
-                    this.topic = topic;
+                .then((res) => {
+                    this.topic = res;
                     this.post = this.topic.posts[0];
 
                     Comment.create({
@@ -45,8 +45,8 @@ describe("Vote", () => {
                         userId: this.user.id,
                         postId: this.post.id
                     })
-                    .then((comment) => {
-                        this.comment = comment;
+                    .then((res) => {
+                        this.comment = res;
                         done();
                     })
                     .catch((err) => {
@@ -133,24 +133,16 @@ describe("Vote", () => {
                 this.vote = vote;
                 expect(vote.userId).toBe(this.user.id);
 
-                // console.log("OLD USER BEFORE SET IS: ");
-                // console.log(this.user.id);
-
                 User.create({
                     email: "sadie@example.com",
                     password: "password"
                 })
                 .then((newUser) => {
 
-                    // console.log("NEW USER BEFORE SET: ");
-                    // console.log(newUser.id);
-
                     this.vote.setUser(newUser)
                     .then((vote) => {
 
                         expect(vote.userId).toBe(newUser.id);
-                        // console.log("AFTER SET: ");
-                        // console.log(newUser.id);
                         done();
                     });
                 })
@@ -174,6 +166,9 @@ describe("Vote", () => {
             .then((vote) => {
                 vote.getUser()
                 .then((user) => {
+
+                    console.log("USER IS");
+                    console.log(this.user.id);
 
                     expect(user.id).toBe(this.user.id);
                     done();
@@ -206,8 +201,8 @@ describe("Vote", () => {
             })
             .then((newPost) => {
 
-                console.log("NEW POST");
-                console.log(newPost);
+                // console.log("NEW POST");
+                // console.log(newPost);
 
                 expect(this.vote.postId).toBe(this.post.id);
 
