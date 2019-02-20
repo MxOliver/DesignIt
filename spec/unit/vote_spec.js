@@ -132,10 +132,7 @@ describe("Vote", () => {
             .then((vote) => {
                 this.vote = vote;
                 expect(vote.userId).toBe(this.user.id);
-
-                /// console.log("VOTE USER BEFORE SET: ");
-                /// console.log(vote.userId);
-
+                
                 User.create({
                     email: "sadie@example.com",
                     password: "password"
@@ -146,8 +143,6 @@ describe("Vote", () => {
                     .then((vote) => {
 
                         expect(vote.userId).toBe(newUser.id);
-                        /// console.log("VOTE USER AFTER SET");
-                        /// console.log(vote.userId);
                         done();
                     });
                 })
@@ -172,12 +167,6 @@ describe("Vote", () => {
                 vote.getUser()
                 .then((user) => {
 
-                    console.log("USER IS");
-                    console.log(user);
-                    
-                    console.log("VOTE");
-                    console.log(vote);
-
                     expect(user.id).toBe(this.user.id);
                     done();
                 })
@@ -198,6 +187,7 @@ describe("Vote", () => {
                 postId: this.post.id
             })
             .then((vote) => {
+
                 this.vote = vote;
 
                 Post.create({
@@ -206,24 +196,21 @@ describe("Vote", () => {
                     topicId: this.topic.id,
                     userId: this.user.id
                 })
-            })
-            .then((newPost) => {
-
-                // console.log("NEW POST");
-                // console.log(newPost);
-
-                expect(this.vote.postId).toBe(this.post.id);
-
-                this.vote.setPost(newPost)
-                .then((vote) => {
-
-                    expect(vote.postId).toBe(newPost.id);
+                .then((newPost) => {
+    
+                    expect(this.vote.postId).toBe(this.post.id);
+    
+                    this.vote.setPost(newPost)
+                    .then((vote) => {
+    
+                        expect(vote.postId).toBe(newPost.id);
+                        done();
+                    });
+                })
+                .catch((err) => {
+                    console.log(err);
                     done();
                 });
-            })
-            .catch((err) => {
-                console.log(err);
-                done();
             });
         });
     });
