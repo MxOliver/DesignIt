@@ -133,6 +133,9 @@ describe("Vote", () => {
                 this.vote = vote;
                 expect(vote.userId).toBe(this.user.id);
 
+                /// console.log("VOTE USER BEFORE SET: ");
+                /// console.log(vote.userId);
+
                 User.create({
                     email: "sadie@example.com",
                     password: "password"
@@ -143,6 +146,8 @@ describe("Vote", () => {
                     .then((vote) => {
 
                         expect(vote.userId).toBe(newUser.id);
+                        /// console.log("VOTE USER AFTER SET");
+                        /// console.log(vote.userId);
                         done();
                     });
                 })
@@ -169,6 +174,9 @@ describe("Vote", () => {
 
                     console.log("USER IS");
                     console.log(user);
+                    
+                    console.log("VOTE");
+                    console.log(vote);
 
                     expect(user.id).toBe(this.user.id);
                     done();
