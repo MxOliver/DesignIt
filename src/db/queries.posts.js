@@ -2,6 +2,7 @@ const Post = require("./models").Post;
 const Topic = require("./models").Topic;
 const Comment = require("./models").Comment;
 const User = require("./models").User;
+const Vote = require("./models").Vote;
 
 module.exports = {
     addPost(newPost, callback){
