@@ -211,10 +211,10 @@ describe("routes : posts", () => {
                     (err, res, body) => {
                         Vote.findAll({where: {
                             value: 1,
-                            userId: req.user.id
-                        }}).then((vote) => {
+                            userId: this.user.id
+                        }, include: [{model: Vote, as: "votes"}]}).then((vote) => {
                             expect(vote.value).toBe(1);
-                            expect(res).toContain("True");
+                            expect(body).toContain("True");
                             done();
                         })
                         .catch((err) => {
@@ -254,24 +254,19 @@ describe("routes : posts", () => {
                 (err, res, body) => {
                     Vote.findAll({where: {
                         value: 1,
-                        userId: req.user.id
-                    }}).then((vote) => {
-                        expect(vote).toBeNull();
-                        expect(res).toContain("False");
+                        postId: this.post.id
+                    }, include: [{model: Vote, as: "votes"}]}).then((vote) => {
+                        expect(body).toContain("False");
                         done();
                     })
                     .catch((err) => {
                         console.log(err);
                         done();
                     })
-                });
-            })
-            .catch((err) => {
-                console.log(err);
-                done();
-            })
-        });
+                })
+            });
     });
+});
 
     describe("POST /topics/:topicId/posts/:id/hasDownvoteFor", () => {
 
@@ -297,10 +292,10 @@ describe("routes : posts", () => {
                     (err, res, body) => {
                         Vote.findAll({where: {
                             value: -1,
-                            userId: req.user.id
-                        }}).then((vote) => {
+                            userId: this.user.id
+                        }, include: [{model: Vote, as: "votes"}]}).then((vote) => {
                             expect(vote.value).toBe(-1);
-                            expect(res).toContain("True");
+                            expect(body).toContain("True");
                             done();
                         })
                         .catch((err) => {
@@ -339,22 +334,18 @@ describe("routes : posts", () => {
                 (err, res, body) => {
                     Vote.findAll({where: {
                         value: -1,
-                        userId: req.user.id
-                    }}).then((vote) => {
-                        expect(vote).toBeNull();
-                        expect(res).toContain("False")
+                        postId: this.post.id
+                    }, include: [{model: Vote, as: "votes"}]}).then((vote) => {
+                        expect(body).toContain("False");
                         done();
                     })
                     .catch((err) => {
                         console.log(err);
                         done();
                     })
-                });
+                })
             })
-            .catch((err) => {
-                console.log(err);
-                done();
-            })
-        });
     });
+});
+
 });
