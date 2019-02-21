@@ -251,14 +251,84 @@ describe("routes : votes", () => {
 
     describe("#getPoints()", () => {
 
+        beforeEach((done) => {
+            Post.findOne({where: {
+                title: "Myth or Fact: Does whistling calm the bees?"
+            } 
+            }).then((post) => {
+                this.post = post;
+
+                Vote.create({
+                    value: 1,
+                    postId: this.post.id,
+                    userId: this.user.id
+                }).then((vote) => {
+                    
+                    expect(vote.value).toBe(1);
+
+                    User.create({
+                        email: "markus@example.com",
+                        password: 3333
+                    }).then((newUser) => {
+                        this.newUser = newUser;
+
+                        Vote.create({
+                            value: -1,
+                            postId: this.post.id,
+                            userId: this.newUser.id
+                        }).then((vote) => {
+                            expect(vote.value).toBe(-1);
+                            done();
+                        })
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        done();
+                    })
+                })
+                .catch((err) => {
+                    console.log(err);
+                    done();
+                })
+            })
+            .catch((err) => {
+                console.log(err);
+                done();
+            });
+        });
+
         it("should return the sum of all the votes for the given post", (done) => {
 
-            done();
-           
-        });      
+            Post.findOne({where: {
+                title: "Myth or Fact: Does whistling calm the bees?"
+            } 
+            }).then((post) => {
+                this.post = post;
 
-    });
+                Vote.findAll({where: {
+                    postId: this.post.id
+                }}).then((votes) => {
 
-  });
+                    this.votes = votes;
 
+                    expect(this.votes.length).toBe(2);
+
+                    this.post.getPoints().then((res) => {
+                        expect(res).toBe(0);
+                        done();
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        done();
+                    });
+                });
+            })
+            .catch((err) => {
+                console.log(err);
+                done();
+            })
+         });      
+      });
+    
+    }); ///END SIGNED-IN USER CONTEXT
 });

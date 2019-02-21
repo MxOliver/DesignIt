@@ -187,7 +187,7 @@ describe("routes : posts", () => {
         });
     });
 
-    describe("#hasUpvoteFor()", () => {
+    describe("POST /topics/:topicId/posts/:id/hasUpvoteFor", () => {
 
         it("should return true if the matching user has an upvote for the post", (done) => {
             Post.findOne({where: {id: this.post.id}})
@@ -202,17 +202,36 @@ describe("routes : posts", () => {
                 .then((vote) => {
                     this.vote = vote;
 
-                    this.post.hasUpvoteFor(this.user.id)
-                    .then((res) => {
-                        expect(this.user.id).toBe(this.vote.userId);
-                        expect(res).toBeTruthy();
-                        done();
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                        done();
+                    const options = {
+                        url: `${base}/${this.topic.id}/posts/${this.post.id}/hasUpvoteFor`,
+                        userId: this.user.id
+                    };
+
+                    request.post(options, 
+                    (err, res, body) => {
+                        Vote.findAll({where: {
+                            value: 1,
+                            userId: req.user.id
+                        }}).then((vote) => {
+                            expect(vote.value).toBe(1);
+                            expect(res).toContain("True");
+                            done();
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                            done();
+                        })
                     });
-                });
+
+                })
+                .catch((err) => {
+                    console.log(err);
+                    done();
+                })
+            })
+            .catch((err) => {
+                console.log(err);
+                done();
             })
         });
 
@@ -226,32 +245,35 @@ describe("routes : posts", () => {
             .then((post) => {
                 this.post = post;
 
-                Vote.findAll({
-                    where: {
-                        userId: this.user.id,
-                        postId: this.post.id,
-                        value: 1
-                    }
-                })
-                .then((vote) => {
+                const options = {
+                    url: `${base}/${this.topic.id}/posts/${this.post.id}/hasUpvoteFor`,
+                    userId: this.user.id
+                };
 
-                    this.vote = vote;
-                    
-                    this.post.hasUpvoteFor(this.user.id)
-                    .then((res) => {
-                        expect(res).toBeFalsy();
+                request.post(options, 
+                (err, res, body) => {
+                    Vote.findAll({where: {
+                        value: 1,
+                        userId: req.user.id
+                    }}).then((vote) => {
+                        expect(vote).toBeNull();
+                        expect(res).toContain("False");
                         done();
                     })
                     .catch((err) => {
                         console.log(err);
                         done();
-                    });
-                })
-            });
+                    })
+                });
+            })
+            .catch((err) => {
+                console.log(err);
+                done();
+            })
         });
     });
 
-    describe("#hasDownvoteFor()", () => {
+    describe("POST /topics/:topicId/posts/:id/hasDownvoteFor", () => {
 
         it("should return true if the matching user has a downvote for the post", (done) => {
             Post.findOne({where: {id: this.post.id}})
@@ -266,18 +288,36 @@ describe("routes : posts", () => {
                 .then((vote) => {
                     this.vote = vote;
 
-                    this.post.hasDownvoteFor(this.user.id)
-                    .then((res) => {
-                        expect(this.user.id).toBe(this.vote.userId);
-                        expect(res).toBeTruthy();
-                        done();
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                        done();
+                    const options = {
+                        url: `${base}/${this.topic.id}/posts/${this.post.id}/hasDownvoteFor`,
+                        userId: this.user.id
+                    };
+
+                    request.post(options, 
+                    (err, res, body) => {
+                        Vote.findAll({where: {
+                            value: -1,
+                            userId: req.user.id
+                        }}).then((vote) => {
+                            expect(vote.value).toBe(-1);
+                            expect(res).toContain("True");
+                            done();
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                            done();
+                        })
                     });
-                });
-            });
+                })
+                .catch((err) => {
+                    console.log(err);
+                    done();
+                })
+            })
+            .catch((err) => {
+                console.log(err);
+                done();
+            })
         });
 
         it("should return false if the matching user does not have a downvote for the post", (done) => {
@@ -290,28 +330,31 @@ describe("routes : posts", () => {
             .then((post) => {
                 this.post = post;
 
-                Vote.findAll({
-                    where: {
-                        userId: this.user.id,
-                        postId: this.post.id,
-                        value: -1
-                    }
-                })
-                .then((vote) => {
+                const options = {
+                    url: `${base}/${this.topic.id}/posts/${this.post.id}/hasDownvoteFor`,
+                    userId: this.user.id
+                };
 
-                    this.vote = vote;
-
-                    this.post.hasDownvoteFor(this.user.id)
-                    .then((res) => {
-                        expect(res).toBeFalsy();
+                request.post(options, 
+                (err, res, body) => {
+                    Vote.findAll({where: {
+                        value: -1,
+                        userId: req.user.id
+                    }}).then((vote) => {
+                        expect(vote).toBeNull();
+                        expect(res).toContain("False")
                         done();
                     })
                     .catch((err) => {
                         console.log(err);
                         done();
-                    });
-                })
-            });
+                    })
+                });
+            })
+            .catch((err) => {
+                console.log(err);
+                done();
+            })
         });
     });
 });

@@ -57,21 +57,33 @@ module.exports = {
                 callback(err);
             });
         });
-    }
-    // getVotes(id, callback){
-    //     return Vote.findAll({
-    //         where: {
-    //             userId: id
-    //         }})
-    //         .then((vote) => {
-    //             if(vote){
-    //                 callback(null, vote);
-    //             } else {
-    //                 callback("This user has no votes");
-    //             }
-    //         })
-    //         .catch((err) => {
-    //             callback(err);
-    //         });
-    // }
+    },
+    getUpvote(userId, postId, callback){
+        Vote.findAll({where: {postId: postId, userId: userId}}).then((vote) => {
+            this.vote = vote;
+
+            if(!vote || vote.value === -1){
+                return callback("False");
+            } else if (this.vote.userId == userId && this.vote.value == 1){
+                return callback(null, "True");
+            }
+        })
+        .catch((err) => {
+            callback(err);
+        });
+    },
+    getDownvote(userId, postId, callback){
+        Vote.findAll({where: {postId: postId, userId: userId}}).then((vote) => {
+            this.vote = vote;
+
+            if(!vote || vote.value === 1){
+                return callback("False");
+            } else if (this.vote.userId == userId && this.vote.value == -1){
+                return callback(null, "True");
+            }
+        })
+        .catch((err) => {
+            callback(err);
+        });
+    },
 }

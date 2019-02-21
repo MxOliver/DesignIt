@@ -56,33 +56,25 @@ module.exports = {
                 res.redirect(`/topics/${req.params.topicId}/posts/${req.params.id}`);
             }
         });
+    },
+    hasUpvoteFor(req, res, next){
+        postQueries.getUpvote(req.user.id, req.params.id, (err, vote) => {
+            if(err || vote == null){
+                console.log("No vote found");
+                console.log(err);
+            } else {
+                return "True";
+            }
+        });
+    },
+    hasDownvoteFor(req, res, next){
+        postQueries.getDownvote(req.user.id, req.params.id, (err, vote) => {
+            if(err || vote == null){
+                console.log("No Vote Found")
+                console.log(err);
+            } else {
+                return "True"
+            }
+        });
     }
-    // hasUpvoteFor(req, res, next){
-    //     postQueries.getVotes(req.params.id, (err, vote) => {
-    //         if(err || vote == null){
-    //             console.log("No votes found");
-    //             console.log(err);
-    //         } else {
-    //             if(vote.value == 1){
-    //                 res.send("True");
-    //             } else {
-    //                 res.send("False");
-    //             };
-    //         };
-    //     });
-    // },
-    // hasDownvoteFor(req, res, next){
-    //     postQueries.getVotes(req.params.id, (err, post) => {
-    //         if(err || vote == null){
-    //             console.log("No votes found");
-    //             console.log(err);
-    //         } else {
-    //             if(vote.value == -1){
-    //                 res.send("True");
-    //             } else {
-    //                 res.send("False");
-    //             }
-    //         };
-    //     });
-    // }
 }
