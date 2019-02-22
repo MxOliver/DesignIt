@@ -13,7 +13,8 @@ module.exports = {
         };
         postQueries.addPost(newPost, (error, post) => {
             if(error){
-                res.redirect(500, "/posts/new");
+                console.log(error);
+                res.redirect(500, "/topics/:topicId/posts/new");
             } else {
                 res.redirect(303, `/topics/${newPost.topicId}/posts/${post.id}`);
             }
