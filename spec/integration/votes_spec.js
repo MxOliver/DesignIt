@@ -254,7 +254,7 @@ describe("routes : votes", () => {
         beforeEach((done) => {
             Post.findOne({where: {
                 title: "Myth or Fact: Does whistling calm the bees?"
-            } 
+            }, include: [{model: Vote, as: "votes"}] 
             }).then((post) => {
                 this.post = post;
 
@@ -301,7 +301,7 @@ describe("routes : votes", () => {
 
             Post.findOne({where: {
                 title: "Myth or Fact: Does whistling calm the bees?"
-            } 
+            }, include: [{model: Vote, as: "votes"}] 
             }).then((post) => {
                 this.post = post;
 
@@ -313,21 +313,19 @@ describe("routes : votes", () => {
 
                     expect(this.votes.length).toBe(2);
 
-                    this.post.getPoints().then((res) => {
-                        expect(res).toBe(0);
-                        done();
+                    expect(this.post.getPoints()).toBe(0);
+                    done();
                     })
                     .catch((err) => {
                         console.log(err);
                         done();
                     });
-                });
-            })
-            .catch((err) => {
-                console.log(err);
-                done();
-            })
-         });      
+                })
+                .catch((err) => {
+                    console.log(err);
+                    done();
+                })
+            });
       });
     
     }); ///END SIGNED-IN USER CONTEXT

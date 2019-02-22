@@ -31,6 +31,7 @@ module.exports = {
     destroy(req, res, next){
         commentQueries.deleteComment(req, (err, comment) => {
             if(err){
+                console.log(err);
                 res.redirect(err, req.headers.referer);
             } else {
                 res.redirect(req.headers.referer);

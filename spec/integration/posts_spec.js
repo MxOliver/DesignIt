@@ -228,11 +228,13 @@ describe("routes : posts", () => {
                     console.log(err);
                     done();
                 })
+                done();
             })
             .catch((err) => {
                 console.log(err);
                 done();
             })
+            done();
         });
 
         it("should return false if the matching user does not have an upvote for the post", (done) => {
@@ -255,7 +257,7 @@ describe("routes : posts", () => {
                     Vote.findAll({where: {
                         value: 1,
                         postId: this.post.id
-                    }, include: [{model: Vote, as: "votes"}]}).then((vote) => {
+                    }, include: [{model: Vote, as: "votes"}]}).then(() => {
                         expect(body).toContain("False");
                         done();
                     })
@@ -263,8 +265,14 @@ describe("routes : posts", () => {
                         console.log(err);
                         done();
                     })
+                    done();
                 })
-            });
+            })
+            .catch((err) => {
+                console.log(err);
+                done();
+            })
+            done();
     });
 });
 
@@ -308,11 +316,13 @@ describe("routes : posts", () => {
                     console.log(err);
                     done();
                 })
+                done();
             })
             .catch((err) => {
                 console.log(err);
                 done();
             })
+            done();
         });
 
         it("should return false if the matching user does not have a downvote for the post", (done) => {
@@ -335,7 +345,7 @@ describe("routes : posts", () => {
                     Vote.findAll({where: {
                         value: -1,
                         postId: this.post.id
-                    }, include: [{model: Vote, as: "votes"}]}).then((vote) => {
+                    }, include: [{model: Vote, as: "votes"}]}).then(() => {
                         expect(body).toContain("False");
                         done();
                     })
@@ -343,8 +353,14 @@ describe("routes : posts", () => {
                         console.log(err);
                         done();
                     })
+                    done();
                 })
             })
+            .catch((err) => {
+                console.log(err);
+                done();
+            })
+            done();
     });
 });
 
