@@ -44,12 +44,12 @@ module.exports = (sequelize, DataTypes) => {
       as: "favorites"
     });
 
-    Post.afterCreate((post, callback) => {
-      return models.Favorite.create({
-        uderId: post.userId,
-        postId: post.id
-      });
-    });
+    // Post.afterCreate((post, callback) => {
+    //   return models.Favorite.create({
+    //     uderId: post.userId,
+    //     postId: post.id
+    //   });
+    // });
   };
   Post.prototype.getPoints = function() {
 

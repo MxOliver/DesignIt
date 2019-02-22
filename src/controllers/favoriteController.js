@@ -6,8 +6,6 @@ module.exports = {
         if(req.user){
             favoriteQueries.createFavorite(req, (err, favorite) => {
                 if(err){
-                    console.log("CREATE POST ERRORS");
-                    console.log(req.user.id);
                     console.log(err);
                     req.flash("error", err);
                 }
@@ -21,6 +19,7 @@ module.exports = {
         if(req.user){
             favoriteQueries.deleteFavorite(req, (err, favorite) => {
                 if(err) {
+                    console.log(err);
                     req.flash("error", err);
                 }
                 res.redirect(req.headers.referer);
