@@ -6,6 +6,8 @@ const sequelize = require("../../src/db/models/index").sequelize;
 const Topic = require("../../src/db/models").Topic;
 const Post = require("../../src/db/models").Post;
 const User = require("../../src/db/models").User;
+const Vote = require("../../src/db/models").Vote;
+const Favorite = require("../../src/db/models").Favorite;
 
 describe("routes : posts", () => {
 
@@ -64,7 +66,8 @@ describe("routes : posts", () => {
                 url: `${base}/${this.topic.id}/posts/create`,
                 form: {
                     title: "Watching snow melt",
-                    body: "Without a doubt my favorite thing to do besides watching paint dry!"
+                    body: "Without a doubt my favorite thing to do besides watching paint dry!",
+                    userId: this.user.id
                 }
             };
             request.post(options,
@@ -100,6 +103,73 @@ describe("routes : posts", () => {
                     .then((post) => {
                         expect(post).toBeNull();
                         done();
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        done();
+                    });
+                });
+        });
+
+        it("should create a favorite for the post on creation", (done) => {
+            const options = {
+                url: `${base}/${this.topic.id}/posts/create`,
+                form: {
+                    title: "Sidewalk Snow Cones",
+                    body: "1. Fill a cup with clean snow. 2. Add your favorite soda. 3. Enjoy!",
+                    userId: this.user.id
+                }
+            };
+
+            request.post(options, 
+                (err, res, body) => {
+                    Post.findOne({where: {title: "Sidewalk Snow Cones"}})
+                    .then((newPost) => {
+                        this.newPost = newPost;
+
+                        expect(newPost.id).toBe(this.newPost.id);
+
+                        Favorite.findOne({where: {postId: this.newPost.id}}).then((favorite) => {
+                            expect(favorite).not.toBeNull();
+                            expect(favorite.userId).toBe(this.user.id);
+                            done();
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                            done();
+                        });
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        done();
+                    });
+                });
+        });
+
+        it("should create an upvote on post creation", (done) => {
+            const options = {
+                url: `${base}/${this.topic.id}/posts/create`,
+                form: {
+                    title: "Going Sledding",
+                    body: "If you don't have a sled, use a trash bag!",
+                    userId: this.user.id
+                }
+            };
+
+            request.post(options, 
+                (err, res, body) => {
+                    Post.findOne({where: {title: "Going Sledding"}}).then((newPost) => {
+                        this.newPost = newPost;
+
+                        Vote.findOne({where: {postId: this.newPost.id}}).then((vote) => {
+                            expect(vote.value).toBe(1);
+                            expect(vote.userId).toBe(this.user.id);
+                            done();
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                            done();
+                        })
                     })
                     .catch((err) => {
                         console.log(err);
@@ -185,4 +255,5 @@ describe("routes : posts", () => {
                 });
         });
     });
+
 });

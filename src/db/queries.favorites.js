@@ -34,9 +34,13 @@ module.exports = {
 
             if(authorized){
                 Favorite.destroy({where: { id }}).then((deletedRecordsCount) => {
+                    console.log("QUERIE LOG");
+                    console.log(id);
+                    console.log(deletedRecordsCount);
                     callback(null, deletedRecordsCount);
                 })
                 .catch((err) => {
+                    console.log(err);
                     callback(err);
                 });
             }
