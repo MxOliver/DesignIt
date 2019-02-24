@@ -23,6 +23,7 @@ module.exports = {
 
             if(authorized){
                 comment.destroy();
+                console.log("AUTHORIZED TO DESTORY");
                 callback(null, comment)
             } else {
                 console.log("NOT AUTHORIZED TO DELETE");

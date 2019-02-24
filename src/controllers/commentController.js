@@ -31,8 +31,11 @@ module.exports = {
     destroy(req, res, next){
         commentQueries.deleteComment(req, (err, comment) => {
             if(err){
+                console.log("ERROR DESTORYING COMMENT");
+                console.log(err);
                 res.redirect(err, req.headers.referer);
             } else {
+                console.log("NO ERROR DESTROYING COMMENT");
                 res.redirect(req.headers.referer);
             }
         });
