@@ -7,6 +7,7 @@ const User = require("../../src/db/models").User;
 const Topic = require("../../src/db/models").Topic;
 const Post = require("../../src/db/models").Post;
 const Comment = require("../../src/db/models").Comment;
+const Favorite = require("../../src/db/models").Favorite;
 
 
 describe("routes : users", () => {
@@ -109,7 +110,7 @@ describe("routes : users", () => {
 
             User.create({
                 email: "beagleboy@kennel.com",
-                password: "puplyfe"
+                password: "pups4lyfe"
             })
             .then((res) => {
                 this.user = res;
@@ -151,6 +152,30 @@ describe("routes : users", () => {
                 expect(body).toContain("This comment is alright.");
                 done();
             });
+        });
+
+        it("should present a list of all the users favorited posts", (done) => {
+
+                Favorite.create({where: {
+                    postId: this.post.id
+                }}).then(() => {
+                    Favorites.findAll({where: {userId: this.user.id}}).then(() => {
+
+                        request.get(`${base}${this.user.id}`, (err, res, body) => {
+                            expect(body).toContain("Mutts: True Gems in the Rough");
+                            done();
+                        })
+
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        done();
+                    })
+                })
+                .catch((err) => {
+                    console.log(err);
+                    done();
+                })
         });
     });
 });
