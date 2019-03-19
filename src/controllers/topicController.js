@@ -38,6 +38,7 @@ module.exports = {
             };
             topicQueries.addTopic(newTopic, (error, topic) => {
                 if(error){
+                    console.log(error);
                     res.redirect(500, "topics/new");
                 } else {
                     res.redirect(303, `/topics/${topic.id}`);
@@ -53,6 +54,8 @@ module.exports = {
         topicQueries.getTopic(req.params.id, (error, topic) => {
 
             if(error || topic == null){
+                console.log("find error");
+                console.log(error);
                 res.redirect(404, "/");
             } else {
                 res.render("topics/show", {topic});

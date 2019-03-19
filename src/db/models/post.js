@@ -11,11 +11,21 @@ module.exports = (sequelize, DataTypes) => {
     },
     topicId: {
       type: DataTypes.INTEGER,
-      allowNull: false 
+      allowNull: false,
+      references: {
+        model: "Topics",
+        key: "id",
+        as: "topicId"
+      } 
     },
     userId: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
+      references: {
+        model: "Users",
+        key: "id",
+        as: "userId"        
+      }
     }
   }, {});
   Post.associate = function(models) {
