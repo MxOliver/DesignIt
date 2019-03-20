@@ -31,8 +31,11 @@
         <p>
             <%= post.body %>
         </p>
-  
-        <a href="<%= post.url %>" target="_blank" class="post-url">Visit URL</a>
+
+        <% if(post.url) { %>
+          <a href="<%= post.url %>" target="_blank" class="post-url">Visit URL</a>
+       <%  } %>
+   
 
         <section id="comment-form">
 
