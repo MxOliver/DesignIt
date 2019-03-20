@@ -12,7 +12,14 @@
       <% include ../static/partials/messages.ejs %>
 
  <!-- #1 -->
-      <h1><%= `${user.email}'s profile` %></h1>
+ <% if(user.name) { %>
+  <h1><%= `${user.name}'s profile` %></h1>
+
+<% } else { %>
+  
+  <h1><%= `${user.email}'s profile` %></h1>
+  
+<% } %>
 
       <hr>
 
@@ -54,6 +61,28 @@
         <% } %>
       </ul>
      
+      <h2>Favorites</h2>
+
+      <ul class="list-unstyled">
+
+        <!-- #4 -->
+
+          <% if(favorites) { %>
+            <% favorites.forEach((favorite) => { %>
+  
+             <% if(favorite.userId !== favorite.Post.userId) { %>
+              <li>
+                 <a href="/topics/<%= favorite.Post.topicId %>/posts/<%= favorite.Post.id %>">
+                  <%= favorite.Post.title %>
+                </a>
+              </li>
+              <hr>
+              <% } %>
+            <% }) %>
+        </ul>
+       <% } %>
+
+
     </main>
 
     <% include ../static/partials/baseScripts.ejs %>
