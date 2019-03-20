@@ -42,9 +42,11 @@ module.exports = {
                         Favorite.scope({method: ["lastFiveFor", id]}).all().then((favorites) => {
                             result["favorites"] = favorites;
 
+
                             callback(null, result);
                         })
                         .catch((err) => {
+                            console.log(err);
                             callback(err);
                         })
                     })
