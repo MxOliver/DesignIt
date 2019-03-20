@@ -8,6 +8,7 @@ module.exports = {
         let newPost = {
             title: req.body.title,
             body: req.body.body,
+            url: req.body.url,
             topicId: req.params.topicId,
             userId: req.user.id 
         };
