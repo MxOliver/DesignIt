@@ -17,6 +17,7 @@ module.exports = {
                 console.log(error);
                 res.redirect(500, "/topics/:topicId/posts/new");
             } else {
+                console.log(newPost.url);
                 res.redirect(303, `/topics/${newPost.topicId}/posts/${post.id}`);
             }
         });

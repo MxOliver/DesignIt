@@ -2,7 +2,7 @@
     "name": "bloccit",
     "version": "1.0.0",
     "description": "A Reddit-like application for users to discuss and share content",
-    "main": "(src/server.js)",
+    "main": "src/server.js",
     "scripts": {
         "test": "export NODE_ENV=test && jasmine",
         "start": "node src/server.js"
@@ -23,6 +23,7 @@
         "express-flash": "0.0.2",
         "express-session": "^1.15.6",
         "express-validator": "^5.0.2",
+        "nodemon": "^1.18.10",
         "passport": "^0.4.0",
         "passport-local": "^1.0.0",
         "pg": "^7.4.1",
