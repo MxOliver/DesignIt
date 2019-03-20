@@ -16,7 +16,7 @@
         <% if(currentUser && currentUser.isAdmin()) { %>
             <a href="/topics/new" class="btn btn-success">New Topic</a>
        <% } %>
-        <ul class="list-group">
+        <ul class="list-group" id="topic-index">
             <!-- #1 -->
             <% topics.forEach((topic) => { %>
             <!-- #2 -->
