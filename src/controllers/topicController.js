@@ -9,7 +9,7 @@ module.exports = {
         topicQueries.getAllTopics((error, topics) => {
 
             if(error){
-                res.redirect(500, "static/index");
+                res.redirect(500, "/");
             } else {
                 res.render("topics/index", {topics});
             }
