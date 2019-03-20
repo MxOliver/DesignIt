@@ -38,11 +38,22 @@ module.exports = {
                     .then((comments) => {
 
                         result["comments"] = comments;
-                        callback(null, result);
+
+                        Favorite.scope({method: ["lastFiveFor", id]}).all().then((favorites) => {
+                            result["favorites"] = favorites;
+
+                            callback(null, result);
+                        })
+                        .catch((err) => {
+                            callback(err);
+                        })
                     })
                     .catch((err) => {
                         callback(err);
                     })
+                })
+                .catch((err) => {
+                    callback(err);
                 })
             }
         })
