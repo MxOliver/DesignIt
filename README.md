@@ -28,9 +28,9 @@ Only admin users may create or delete topics.
 
 Refactoring and ideas for the future:
 
-- [] I would love to add React to this stack and really flesh out the front-end components
+- [ ] I would love to add React to this stack and really flesh out the front-end components
 
-- [] I want to set up some kind of link scraping so that adding an article link will create a preview image
+- [ ] I want to set up some kind of link scraping so that adding an article link will create a preview image
 
 
 ## App Configuration
@@ -39,7 +39,26 @@ Refactoring and ideas for the future:
 
 2. OPEN terminal and run `git clone <link> + (optional <custom-filename-of-your-choosing>)`
 
-3. THEN `cd` into the folder containing the source code and run `npm start`
+3. THEN `cd` into the folder containing the source code 
+
+### Database Set Up
+
+4. run `sequelize db:create` + `sequelize db:migrate` (optional for testing environment: `sequelize db:create --env test` `sequelize db:migrate --env test`
+
+### API Keys
+
+5. In the root directory `touch app.env` to create a file to store your secret keys 
+
+6. You will need a cookieSecret to run the express session add the following into your new .env file
+
+```
+cookieSecret='insert random string';
+
+```
+
+7. run `source app.env` in your terminal (there will be no response from this command)
+
+8. finally run `npm start`
 
 you should see something like this in your terminal:
 
